@@ -72,10 +72,10 @@ hl.common = {
     WildMenu = {fg = c.bg0, bg = c.blue},
     PmenuThumb = {fg = c.none, bg = c.grey},
     Question = {fg = c.yellow},
-    SpellBad = {fg = c.red, fmt = "underline", sp = c.red},
-    SpellCap = {fg = c.yellow, fmt = "underline", sp = c.yellow},
-    SpellLocal = {fg = c.blue, fmt = "underline", sp = c.blue},
-    SpellRare = {fg = c.purple, fmt = "underline", sp = c.purple},
+    SpellBad = {fg = c.none, fmt = "undercurl", sp = c.red},
+    SpellCap = {fg = c.none, fmt = "undercurl", sp = c.yellow},
+    SpellLocal = {fg = c.none, fmt = "undercurl", sp = c.blue},
+    SpellRare = {fg = c.none, fmt = "undercurl", sp = c.purple},
     StatusLine = {fg = c.fg, bg = c.bg2},
     StatusLineTerm = {fg = c.fg, bg = c.bg2},
     StatusLineNC = {fg = c.grey, bg = c.bg1},
@@ -111,7 +111,7 @@ hl.syntax = {
     Include = colors.Purple,
     Keyword = {fg = c.purple, fmt = cfg.code_style.keywords},
     Define = colors.Purple,
-    Typedef = colors.Purple,
+    Typedef = colors.Yellow,
     Exception = colors.Purple,
     Conditional = {fg = c.purple, fmt = cfg.code_style.keywords},
     Repeat = {fg = c.purple, fmt = cfg.code_style.keywords},
@@ -135,13 +135,14 @@ if vim.api.nvim_call_function("has", { "nvim-0.8" }) == 1 then
     hl.treesitter = {
         ["@annotation"] = colors.Fg,
         ["@attribute"] = colors.Cyan,
+        ["@attribute.typescript"] = colors.Blue,
         ["@boolean"] = colors.Orange,
         ["@character"] = colors.Orange,
         ["@comment"] = {fg = c.grey, fmt = cfg.code_style.comments},
         ["@conditional"] = {fg = c.purple, fmt = cfg.code_style.keywords},
-        ["@constant"] = colors.Orange,
-        ["@constant.builtin"] = colors.Orange,
-        ["@constant.macro"] = colors.Orange,
+        ["@constant"] = {fg = c.orange, fmt = cfg.code_style.constants},
+        ["@constant.builtin"] = {fg = c.orange, fmt = cfg.code_style.constants},
+        ["@constant.macro"] = {fg = c.orange, fmt = cfg.code_style.constants},
         ["@constructor"] = {fg = c.yellow, fmt = "bold"},
         ["@error"] = colors.Fg,
         ["@exception"] = colors.Purple,
@@ -156,13 +157,14 @@ if vim.api.nvim_call_function("has", { "nvim-0.8" }) == 1 then
         ["@keyword.operator"] =  {fg = c.purple, fmt = cfg.code_style.keywords},
         ["@keyword.return"] =  {fg = c.purple, fmt = "bold"},
         ["@label"] = colors.Red,
-        ["@method"] = colors.Blue,
+        ["@method"] = {fg = c.blue, fmt = cfg.code_style.functions},
         ["@namespace"] = colors.Yellow,
         ["@none"] = colors.Fg,
         ["@number"] = colors.Orange,
         ["@operator"] = colors.Fg,
         ["@parameter"] = {fg = c.orange, fmt = "italic"},
         ["@parameter.reference"] = colors.Fg,
+        ["@preproc"] = colors.Purple,
         ["@property"] = colors.Cyan,
         ["@punctuation.delimiter"] = colors.LightGrey,
         ["@punctuation.bracket"] = colors.LightGrey,
@@ -221,6 +223,7 @@ if vim.api.nvim_call_function("has", { "nvim-0.8" }) == 1 then
             ["@lsp.typemod.string.injected"] = hl.treesitter["@string"],
             ["@lsp.typemod.variable.defaultLibrary"] = hl.treesitter["@variable.builtin"],
             ["@lsp.typemod.variable.injected"] = hl.treesitter["@variable"],
+            ["@lsp.typemod.variable.static"] = hl.treesitter["@constant"],
         }
     end
 else
@@ -247,7 +250,7 @@ else
         TSKeywordFunction = {fg = c.purple, fmt = cfg.code_style.functions},
         TSKeywordOperator =  {fg = c.purple, fmt = cfg.code_style.keywords},
         TSLabel = colors.Red,
-        TSMethod = colors.Blue,
+        TSMethod = {fg = c.blue, fmt = cfg.code_style.functions},
         TSNamespace = colors.Yellow,
         TSNone = colors.Fg,
         TSNumber = colors.Orange,
@@ -519,6 +522,26 @@ hl.plugins.ts_rainbow = {
     rainbowcol7 = colors.Red
 }
 
+hl.plugins.ts_rainbow2 = {
+    TSRainbowRed = colors.Red,
+    TSRainbowYellow = colors.Yellow,
+    TSRainbowBlue = colors.Blue,
+    TSRainbowOrange = colors.Orange,
+    TSRainbowGreen = colors.Green,
+    TSRainbowViolet = colors.Purple,
+    TSRainbowCyan = colors.Cyan,
+}
+
+hl.plugins.rainbow_delimiters = {
+    RainbowDelimiterRed = colors.Red,
+    RainbowDelimiterYellow = colors.Yellow,
+    RainbowDelimiterBlue = colors.Blue,
+    RainbowDelimiterOrange = colors.Orange,
+    RainbowDelimiterGreen = colors.Green,
+    RainbowDelimiterViolet = colors.Purple,
+    RainbowDelimiterCyan = colors.Cyan,
+}
+
 hl.plugins.indent_blankline = {
     IndentBlanklineIndent1 = colors.Blue,
     IndentBlanklineIndent2 = colors.Green,
@@ -526,11 +549,15 @@ hl.plugins.indent_blankline = {
     IndentBlanklineIndent4 = colors.LightGrey,
     IndentBlanklineIndent5 = colors.Purple,
     IndentBlanklineIndent6 = colors.Red,
-    IndentBlanklineChar = { fg = c.bg1, gui = "nocombine" },
-    IndentBlanklineContext = { fg = c.orange, bg = c.grey, bold = true },
-    IndentBlanklineContextChar = { fg = c.grey, gui = "nocombine" },
-    IndentBlanklineContextStart = { sp = c.grey, gui = "underline" },
-    IndentBlanklineContextSpaceChar = { gui = "nocombine" },
+    IndentBlanklineChar = { fg = c.bg1, fmt = "nocombine" },
+    IndentBlanklineContextChar = { fg = c.grey, fmt = "nocombine" },
+    IndentBlanklineContextStart = { sp = c.grey, fmt = "underline" },
+    IndentBlanklineContextSpaceChar = { fmt = "nocombine" },
+
+    -- Ibl v3
+    IblIndent = { fg = c.bg1, fmt = "nocombine" },
+    IblWhitespace = { fmt = "nocombine" },
+    IblScope = { fmt = "nocombine" },
 }
 
 hl.plugins.mini = {
